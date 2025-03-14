@@ -6,7 +6,7 @@ public class Board : MonoBehaviour
     public Tilemap tilemap { get; private set; }
     public Piece activePiece { get; private set; }
     public Vector3Int spawnPosition;
-    public Vector2Int boardSize = new Vector2Int(10, 20);  // TODO: UPDATE THIS TO BE SQUARE
+    public Vector2Int boardSize = new Vector2Int(20, 20);
 
     public RectInt Bounds
     {
@@ -98,67 +98,202 @@ public class Board : MonoBehaviour
     public void ClearLines()
     {
         RectInt bounds = this.Bounds;
-        int row = bounds.yMin;
-
-        while (row < bounds.yMax)
+        Vector2Int gravityDir = Piece.CurrentGravityDirection;
+        
+        // check for horizontal lines (rows)
+        if (gravityDir == Vector2Int.up || gravityDir == Vector2Int.down)
         {
-            if (IsLineFull(row))
+            int row = bounds.yMin;
+            while (row < bounds.yMax)
             {
-                LineClear(row);
+                if (IsLineFull(row, true))
+                {
+                    LineClear(row, gravityDir, true);
+                }
+                else
+                {
+                    row++;
+                }
             }
-            else
+        }
+        // check for vertical lines (columns)
+        else if (gravityDir == Vector2Int.left || gravityDir == Vector2Int.right)
+        {
+            int col = bounds.xMin;
+            while (col < bounds.xMax)
             {
-                row++;
+                if (IsLineFull(col, false))
+                {
+                    LineClear(col, gravityDir, false);
+                }
+                else
+                {
+                    col++;
+                }
             }
         }
     }
 
-    private bool IsLineFull(int row)
+    private bool IsLineFull(int index, bool isRow)
     {
         RectInt bounds = this.Bounds;
 
-        for (int col = bounds.xMin; col < bounds.xMax; col++)
+        if (isRow)
         {
-            Vector3Int position = new Vector3Int(col, row, 0);
-            
-            if (!this.tilemap.HasTile(position))
+            // check if a horizontal line (row) is full
+            for (int col = bounds.xMin; col < bounds.xMax; col++)
             {
-                return false;
+                Vector3Int position = new Vector3Int(col, index, 0);
+                
+                if (!this.tilemap.HasTile(position))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            // check if a vertical line (column) is full
+            for (int row = bounds.yMin; row < bounds.yMax; row++)
+            {
+                Vector3Int position = new Vector3Int(index, row, 0);
+                
+                if (!this.tilemap.HasTile(position))
+                {
+                    return false;
+                }
             }
         }
 
         return true;
     }
 
-    private void LineClear(int row)
+    private void LineClear(int index, Vector2Int gravityDir, bool isRow)
     {
         RectInt bounds = this.Bounds;
 
-        for (int col = bounds.xMin; col < bounds.xMax; col++)
+        // clear the line
+        if (isRow)
         {
-            Vector3Int position = new Vector3Int(col, row, 0);
-            tilemap.SetTile(position, null);
-        }
-
-        // move all rows above the one cleared down by one row
-        while (row < bounds.yMax)
-        {
+            // clear a horizontal line (row)
             for (int col = bounds.xMin; col < bounds.xMax; col++)
             {
-                Vector3Int position = new Vector3Int(col, row + 1, 0);
-                TileBase above = tilemap.GetTile(position);
-
-                position = new Vector3Int(col, row, 0);
-                tilemap.SetTile(position, above);
+                Vector3Int position = new Vector3Int(col, index, 0);
+                tilemap.SetTile(position, null);
             }
+        }
+        else
+        {
+            // clear a vertical line (column)
+            for (int row = bounds.yMin; row < bounds.yMax; row++)
+            {
+                Vector3Int position = new Vector3Int(index, row, 0);
+                tilemap.SetTile(position, null);
+            }
+        }
 
-            row++;
+        // move tiles in the direction of gravity
+        if (isRow)
+        {
+            // for horizontal lines (rows)
+            if (gravityDir == Vector2Int.down)
+            {
+                // move everything above the cleared row down
+                for (int row = index; row < bounds.yMax - 1; row++)
+                {
+                    for (int col = bounds.xMin; col < bounds.xMax; col++)
+                    {
+                        Vector3Int position = new Vector3Int(col, row + 1, 0);
+                        TileBase above = tilemap.GetTile(position);
+
+                        position = new Vector3Int(col, row, 0);
+                        tilemap.SetTile(position, above);
+                    }
+                }
+                
+                // clear the top row
+                for (int col = bounds.xMin; col < bounds.xMax; col++)
+                {
+                    Vector3Int position = new Vector3Int(col, bounds.yMax - 1, 0);
+                    tilemap.SetTile(position, null);
+                }
+            }
+            else if (gravityDir == Vector2Int.up)
+            {
+                // move everything below the cleared row up
+                for (int row = index; row > bounds.yMin; row--)
+                {
+                    for (int col = bounds.xMin; col < bounds.xMax; col++)
+                    {
+                        Vector3Int position = new Vector3Int(col, row - 1, 0);
+                        TileBase below = tilemap.GetTile(position);
+
+                        position = new Vector3Int(col, row, 0);
+                        tilemap.SetTile(position, below);
+                    }
+                }
+                
+                // clear the bottom row
+                for (int col = bounds.xMin; col < bounds.xMax; col++)
+                {
+                    Vector3Int position = new Vector3Int(col, bounds.yMin, 0);
+                    tilemap.SetTile(position, null);
+                }
+            }
+        }
+        else
+        {
+            // for vertical lines (columns)
+            if (gravityDir == Vector2Int.right)
+            {
+                // move everything to the left of the cleared column to the right
+                for (int col = index; col > bounds.xMin; col--)
+                {
+                    for (int row = bounds.yMin; row < bounds.yMax; row++)
+                    {
+                        Vector3Int position = new Vector3Int(col - 1, row, 0);
+                        TileBase left = tilemap.GetTile(position);
+
+                        position = new Vector3Int(col, row, 0);
+                        tilemap.SetTile(position, left);
+                    }
+                }
+                
+                // clear the leftmost column
+                for (int row = bounds.yMin; row < bounds.yMax; row++)
+                {
+                    Vector3Int position = new Vector3Int(bounds.xMin, row, 0);
+                    tilemap.SetTile(position, null);
+                }
+            }
+            else if (gravityDir == Vector2Int.left)
+            {
+                // move everything to the right of the cleared column to the left
+                for (int col = index; col < bounds.xMax - 1; col++)
+                {
+                    for (int row = bounds.yMin; row < bounds.yMax; row++)
+                    {
+                        Vector3Int position = new Vector3Int(col + 1, row, 0);
+                        TileBase right = tilemap.GetTile(position);
+
+                        position = new Vector3Int(col, row, 0);
+                        tilemap.SetTile(position, right);
+                    }
+                }
+                
+                // clear the rightmost column
+                for (int row = bounds.yMin; row < bounds.yMax; row++)
+                {
+                    Vector3Int position = new Vector3Int(bounds.xMax - 1, row, 0);
+                    tilemap.SetTile(position, null);
+                }
+            }
         }
     }
 
     public void GameOver()
     {
-        // TODO: Add game over screen
+        // TODO: add game over screen
         this.tilemap.ClearAllTiles();
     }
 }
