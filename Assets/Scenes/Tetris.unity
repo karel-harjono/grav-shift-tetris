@@ -570,7 +570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5fa46e0bd143f04cbb77483df655108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPosition: {x: 0, y: 0, z: 0}
+  spawnPosition: {x: -1, y: 8, z: 0}
   tetrominoes:
   - tetromino: 0
     tile: {fileID: 11400000, guid: ca96bef06e4b2ae4291b3da30ad48615, type: 2}

@@ -19,4 +19,36 @@ public class Piece : MonoBehaviour
             this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
+
+    private void Update()
+    {
+        this.board.Clear(this);
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Move(Vector2Int.left);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            Move(Vector2Int.right);
+        }
+
+        this.board.Set(this);
+    }
+
+    private bool Move(Vector2Int direction)
+    {
+        Vector3Int newPosition = this.position;
+        newPosition.x += direction.x;
+        newPosition.y += direction.y;
+
+        bool valid = board.IsValidPosition(this, newPosition);
+        if (valid)
+        {
+            this.position = newPosition;
+            board.Set(this);
+        }
+
+        return valid;
+    }
 }
