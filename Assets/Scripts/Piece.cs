@@ -13,6 +13,10 @@ public class Piece : MonoBehaviour
 
     private float stepTime;
     private float lockTime;
+    private static Vector2Int currentGravityDirection = Vector2Int.down;
+    
+    // Add public getter for currentGravityDirection
+    public static Vector2Int CurrentGravityDirection => currentGravityDirection;
 
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
@@ -36,7 +40,16 @@ public class Piece : MonoBehaviour
     {
         this.board.Clear(this);
 
-        lockTime += Time.deltaTime;
+        // check if the piece can move in the gravity direction
+        Vector3Int gravityPosition = this.position + new Vector3Int(currentGravityDirection.x, currentGravityDirection.y, 0);
+        if (!board.IsValidPosition(this, gravityPosition))
+        {
+            lockTime += Time.deltaTime;
+        }
+        else
+        {
+            lockTime = 0f;
+        }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -47,16 +60,23 @@ public class Piece : MonoBehaviour
             Rotate(1);
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        
+        Vector2Int oppositeDirection = new Vector2Int(-currentGravityDirection.x, -currentGravityDirection.y);
+
+        // ignore the opposite direction of gravity
+        if (Input.GetKeyDown(KeyCode.A) && Vector2Int.left != oppositeDirection)
         {
             Move(Vector2Int.left);
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) && Vector2Int.right != oppositeDirection)
         {
             Move(Vector2Int.right);
         }
-
-        if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.W) && Vector2Int.up != oppositeDirection)
+        {
+            Move(Vector2Int.up);
+        }
+        else if (Input.GetKeyDown(KeyCode.S) && Vector2Int.down != oppositeDirection)
         {
             Move(Vector2Int.down);
         }
@@ -78,7 +98,8 @@ public class Piece : MonoBehaviour
     {
         stepTime = Time.time + stepDelay;
 
-        Move(Vector2Int.down);
+        // move in the current gravity direction
+        Move(currentGravityDirection);
 
         if (lockTime >= lockDelay)
         {
@@ -90,12 +111,26 @@ public class Piece : MonoBehaviour
     {
         this.board.Set(this);
         this.board.ClearLines();
+        
+        // choose a new random gravity direction for the next piece
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left,
+            Vector2Int.right
+        };
+        
+        int randomIndex = Random.Range(0, directions.Length);
+        currentGravityDirection = directions[randomIndex];
+        
         this.board.SpawnPiece();
     }
 
     private void HardDrop()
     {
-        while (Move(Vector2Int.down))
+        // hard drop in the current gravity direction
+        while (Move(currentGravityDirection))
         {
             continue;
         }

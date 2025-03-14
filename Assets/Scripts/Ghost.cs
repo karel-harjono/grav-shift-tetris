@@ -45,19 +45,21 @@ public class Ghost : MonoBehaviour
     private void Drop()
     {
         Vector3Int position = trackingPiece.position;
-
-        int currentRow = position.y;
-        int bottomRow = -board.boardSize.y / 2 - 1;
+        Vector2Int gravityDir = Piece.CurrentGravityDirection;
 
         board.Clear(trackingPiece);
 
-        for (int row = currentRow; row >= bottomRow; row--)
+        while (true)
         {
-            position.y = row;
-
-            if (board.IsValidPosition(trackingPiece, position))
+            Vector3Int nextPosition = new Vector3Int(
+                position.x + gravityDir.x,
+                position.y + gravityDir.y,
+                position.z
+            );
+            
+            if (board.IsValidPosition(trackingPiece, nextPosition))
             {
-                this.position = position;
+                position = nextPosition;
             }
             else
             {
@@ -65,6 +67,7 @@ public class Ghost : MonoBehaviour
             }
         }
 
+        this.position = position;
         board.Set(trackingPiece);
     }
     
