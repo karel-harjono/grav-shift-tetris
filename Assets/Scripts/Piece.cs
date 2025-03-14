@@ -8,12 +8,21 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public int rotationIndex { get; private set; }
 
+    public float stepDelay = 1f;
+    public float lockDelay = 0.5f;
+
+    private float stepTime;
+    private float lockTime;
+
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
         this.position = position;
         this.data = data;
         this.rotationIndex = 0;
+
+        stepTime = Time.time + this.stepDelay;
+        lockTime = 0f;
 
         this.cells ??= new Vector3Int[data.cells.Length];
 
@@ -26,6 +35,8 @@ public class Piece : MonoBehaviour
     private void Update()
     {
         this.board.Clear(this);
+
+        lockTime += Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -55,7 +66,30 @@ public class Piece : MonoBehaviour
             HardDrop();
         }
 
+        if (Time.time >= stepTime)
+        {
+            Step();
+        }
+
         this.board.Set(this);
+    }
+
+    private void Step()
+    {
+        stepTime = Time.time + stepDelay;
+
+        Move(Vector2Int.down);
+
+        if (lockTime >= lockDelay)
+        {
+            Lock();
+        }
+    }
+
+    private void Lock()
+    {
+        this.board.Set(this);
+        this.board.SpawnPiece();
     }
 
     private void HardDrop()
@@ -64,6 +98,8 @@ public class Piece : MonoBehaviour
         {
             continue;
         }
+
+        Lock();
     }
 
     private bool Move(Vector2Int direction)
@@ -76,6 +112,7 @@ public class Piece : MonoBehaviour
         if (valid)
         {
             this.position = newPosition;
+            lockTime = 0f;
         }
 
         return valid;
