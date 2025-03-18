@@ -170,6 +170,7 @@ public class Board : MonoBehaviour
 
     private void LineClear(int index, Vector2Int gravityDir, bool isRow)
     {
+        AudioManager.Instance.PlaySFX("LineClear");
         RectInt bounds = this.Bounds;
         int halfwayPoint;
 
@@ -279,6 +280,7 @@ public class Board : MonoBehaviour
 
     public void GameOver()
     {
+        AudioManager.Instance.PlaySFX("GameOver");
         // TODO: add game over screen
         this.tilemap.ClearAllTiles();
     }

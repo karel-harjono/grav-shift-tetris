@@ -109,6 +109,7 @@ public class Piece : MonoBehaviour
 
     private void Lock()
     {
+        AudioManager.Instance.PlaySFX("Lock");
         this.board.Set(this);
         this.board.ClearLines();
         
