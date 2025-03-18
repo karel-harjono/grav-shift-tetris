@@ -171,6 +171,7 @@ public class Board : MonoBehaviour
     private void LineClear(int index, Vector2Int gravityDir, bool isRow)
     {
         RectInt bounds = this.Bounds;
+        int halfwayPoint;
 
         // clear the line
         if (isRow)
@@ -181,6 +182,9 @@ public class Board : MonoBehaviour
                 Vector3Int position = new Vector3Int(col, index, 0);
                 tilemap.SetTile(position, null);
             }
+            
+            // only affect half of the row
+            halfwayPoint = bounds.xMin + bounds.width / 2;
         }
         else
         {
@@ -190,6 +194,9 @@ public class Board : MonoBehaviour
                 Vector3Int position = new Vector3Int(index, row, 0);
                 tilemap.SetTile(position, null);
             }
+            
+            // only affect half of the column
+            halfwayPoint = bounds.yMin + bounds.height / 2;
         }
 
         // move tiles in the direction of gravity
@@ -198,8 +205,8 @@ public class Board : MonoBehaviour
             // for horizontal lines (rows)
             if (gravityDir == Vector2Int.down)
             {
-                // move everything above the cleared row down
-                for (int row = index; row < bounds.yMax - 1; row++)
+                // move only half of the blocks above the cleared row down
+                for (int row = index; row < halfwayPoint - 1; row++)
                 {
                     for (int col = bounds.xMin; col < bounds.xMax; col++)
                     {
@@ -210,18 +217,11 @@ public class Board : MonoBehaviour
                         tilemap.SetTile(position, above);
                     }
                 }
-                
-                // clear the top row
-                for (int col = bounds.xMin; col < bounds.xMax; col++)
-                {
-                    Vector3Int position = new Vector3Int(col, bounds.yMax - 1, 0);
-                    tilemap.SetTile(position, null);
-                }
             }
             else if (gravityDir == Vector2Int.up)
             {
-                // move everything below the cleared row up
-                for (int row = index; row > bounds.yMin; row--)
+                // move only half of the blocks below the cleared row up
+                for (int row = index; row > halfwayPoint; row--)
                 {
                     for (int col = bounds.xMin; col < bounds.xMax; col++)
                     {
@@ -233,8 +233,8 @@ public class Board : MonoBehaviour
                     }
                 }
                 
-                // clear the bottom row
-                for (int col = bounds.xMin; col < bounds.xMax; col++)
+                // clear the moved tiles in the bottom row on the right half
+                for (int col = halfwayPoint; col < bounds.xMax; col++)
                 {
                     Vector3Int position = new Vector3Int(col, bounds.yMin, 0);
                     tilemap.SetTile(position, null);
@@ -246,10 +246,10 @@ public class Board : MonoBehaviour
             // for vertical lines (columns)
             if (gravityDir == Vector2Int.right)
             {
-                // move everything to the left of the cleared column to the right
-                for (int col = index; col > bounds.xMin; col--)
+                // move only half of the blocks to the left of the cleared column to the right
+                for (int col = index; col > halfwayPoint; col--)
                 {
-                    for (int row = bounds.yMin; row < bounds.yMax; row++)
+                    for (int row = bounds.yMin; row < halfwayPoint; row++) // Only up to halfway
                     {
                         Vector3Int position = new Vector3Int(col - 1, row, 0);
                         TileBase left = tilemap.GetTile(position);
@@ -258,18 +258,11 @@ public class Board : MonoBehaviour
                         tilemap.SetTile(position, left);
                     }
                 }
-                
-                // clear the leftmost column
-                for (int row = bounds.yMin; row < bounds.yMax; row++)
-                {
-                    Vector3Int position = new Vector3Int(bounds.xMin, row, 0);
-                    tilemap.SetTile(position, null);
-                }
             }
             else if (gravityDir == Vector2Int.left)
             {
-                // move everything to the right of the cleared column to the left
-                for (int col = index; col < bounds.xMax - 1; col++)
+                // move only half of the blocks to the right of the cleared column to the left
+                for (int col = index; col < halfwayPoint - 1; col++)
                 {
                     for (int row = bounds.yMin; row < bounds.yMax; row++)
                     {
@@ -279,13 +272,6 @@ public class Board : MonoBehaviour
                         position = new Vector3Int(col, row, 0);
                         tilemap.SetTile(position, right);
                     }
-                }
-                
-                // clear the rightmost column
-                for (int row = bounds.yMin; row < bounds.yMax; row++)
-                {
-                    Vector3Int position = new Vector3Int(bounds.xMax - 1, row, 0);
-                    tilemap.SetTile(position, null);
                 }
             }
         }
