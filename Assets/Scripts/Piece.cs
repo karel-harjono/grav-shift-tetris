@@ -8,6 +8,7 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public int rotationIndex { get; private set; }
 
+
     public float stepDelay = 1f;
     public float lockDelay = 0.5f;
 
@@ -18,7 +19,7 @@ public class Piece : MonoBehaviour
     // Add public getter for currentGravityDirection
     public static Vector2Int CurrentGravityDirection => currentGravityDirection;
 
-    public void Initialize(Board board, Vector3Int position, TetrominoData data)
+    public void Initialize(Board board, Vector3Int position, TetrominoData data, bool isPreview = false)
     {
         this.board = board;
         this.position = position;
@@ -26,20 +27,22 @@ public class Piece : MonoBehaviour
         this.rotationIndex = 0;
 
         // If this is the first piece, initialize currentGravityDirection
-        if (currentGravityDirection == Vector2Int.zero)
+
+            // First time only
+         if (currentGravityDirection == Vector2Int.zero)
         {
             currentGravityDirection = GetRandomDirection();
         }
 
-        // If nextGravityDirection hasn't been picked yet
         if (nextGravityDirection == Vector2Int.zero)
         {
             nextGravityDirection = GetRandomDirection();
         }
 
-        // Update the UI to show the *next* direction
-        FindFirstObjectByType<NextDirectionUI>().ShowNextGravity(nextGravityDirection);
-
+        if (!isPreview)
+        {
+            FindFirstObjectByType<NextDirectionUI>().ShowNextGravity(nextGravityDirection);
+        }
         // Apply the rotation logic and initialize cells
         if (this.cells == null || this.cells.Length != data.cells.Length)
         {
@@ -154,7 +157,7 @@ public class Piece : MonoBehaviour
 
         // Choose a *new* one for next time
         nextGravityDirection = GetRandomDirection();
-
+        
         // Update UI
         FindFirstObjectByType<NextDirectionUI>().ShowNextGravity(nextGravityDirection);
 

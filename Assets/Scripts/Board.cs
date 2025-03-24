@@ -54,13 +54,13 @@ public class Board : MonoBehaviour
         int random = Random.Range(0, tetrominoes.Length);
         TetrominoData data = tetrominoes[random];
 
-        nextPiece.Initialize(this, previewPosition, data);
+        nextPiece.Initialize(this, previewPosition, data, true);
         Set(nextPiece);
     }
     
     public void SpawnPiece()
     {
-        activePiece.Initialize(this, spawnPosition, nextPiece.data);
+        activePiece.Initialize(this, spawnPosition, nextPiece.data, true);
 
         if (IsValidPosition(activePiece, spawnPosition)) {
             Set(activePiece);
@@ -69,6 +69,7 @@ public class Board : MonoBehaviour
         }
 
         SetNextPiece();
+        
     }
 
     public void Set(Piece piece)
