@@ -8,27 +8,46 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public int rotationIndex { get; private set; }
 
+
     public float stepDelay = 1f;
     public float lockDelay = 0.5f;
 
     private float stepTime;
     private float lockTime;
     private static Vector2Int currentGravityDirection = Vector2Int.down;
-    
+    private Vector2Int nextGravityDirection;
     // Add public getter for currentGravityDirection
     public static Vector2Int CurrentGravityDirection => currentGravityDirection;
 
-    public void Initialize(Board board, Vector3Int position, TetrominoData data)
+    public void Initialize(Board board, Vector3Int position, TetrominoData data, bool isPreview = false)
     {
         this.board = board;
         this.position = position;
         this.data = data;
         this.rotationIndex = 0;
 
-        stepTime = Time.time + this.stepDelay;
-        lockTime = 0f;
+        // If this is the first piece, initialize currentGravityDirection
 
-        this.cells ??= new Vector3Int[data.cells.Length];
+            // First time only
+         if (currentGravityDirection == Vector2Int.zero)
+        {
+            currentGravityDirection = GetRandomDirection();
+        }
+
+        if (nextGravityDirection == Vector2Int.zero)
+        {
+            nextGravityDirection = GetRandomDirection();
+        }
+
+        if (!isPreview)
+        {
+            FindFirstObjectByType<NextDirectionUI>().ShowNextGravity(nextGravityDirection);
+        }
+        // Apply the rotation logic and initialize cells
+        if (this.cells == null || this.cells.Length != data.cells.Length)
+        {
+            this.cells = new Vector3Int[data.cells.Length];
+        }
 
         for (int i = 0; i < data.cells.Length; i++)
         {
@@ -106,27 +125,45 @@ public class Piece : MonoBehaviour
             Lock();
         }
     }
+    private Vector2Int GetRandomDirection()
+{
+    Vector2Int[] directions = new Vector2Int[]
+    {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right
+    };
+
+    // Optional: don't repeat same as current
+    Vector2Int newDirection;
+    do
+    {
+        newDirection = directions[Random.Range(0, directions.Length)];
+    }
+    while (newDirection == currentGravityDirection);
+
+    return newDirection;
+}
 
     private void Lock()
     {
         AudioManager.Instance.PlaySFX("Lock");
         this.board.Set(this);
         this.board.ClearLines();
+
+        // Apply the next gravity as the new current one
+        currentGravityDirection = nextGravityDirection;
+
+        // Choose a *new* one for next time
+        nextGravityDirection = GetRandomDirection();
         
-        // choose a new random gravity direction for the next piece
-        Vector2Int[] directions = new Vector2Int[]
-        {
-            Vector2Int.up,
-            Vector2Int.down,
-            Vector2Int.left,
-            Vector2Int.right
-        };
-        
-        int randomIndex = Random.Range(0, directions.Length);
-        currentGravityDirection = directions[randomIndex];
-        
+        // Update UI
+        FindFirstObjectByType<NextDirectionUI>().ShowNextGravity(nextGravityDirection);
+
         this.board.SpawnPiece();
     }
+    
 
     private void HardDrop()
     {
