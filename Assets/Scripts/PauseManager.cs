@@ -6,6 +6,7 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject pauseMenu; // Assign your UI Panel for the menu in Inspector
     public Tilemap tilemap;
+    public Board board;
 
     void Start()
     {
@@ -42,6 +43,7 @@ public class PauseManager : MonoBehaviour
     {
         tilemap.ClearAllTiles();
         pauseMenu.SetActive(false); // Hide the Pause Menu at the start
+        board.SpawnPiece(); // Spawn the first piece
         ResumeGame(); // Resume the game
     }
 
