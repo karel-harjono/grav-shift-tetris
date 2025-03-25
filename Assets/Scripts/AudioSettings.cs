@@ -8,11 +8,16 @@ public class AudioSettings : MonoBehaviour
 
     void Update()
     {
-        UpdateMuteStatusImage();
+        if (musicSource != null)
+        {
+            UpdateMuteStatusImage();
+        }
     }
 
     public void UpdateMuteStatusImage()
     {
+        if (musicSource == null) return; // Prevents errors if musicSource is missing
+
         if (musicSource.mute)
         {
             soundImage.SetActive(false);
@@ -27,8 +32,14 @@ public class AudioSettings : MonoBehaviour
 
     public void ToggleMusicAndUpdateImage()
     {
+        if (AudioManager.Instance == null) return; // Ensure AudioManager exists
+
         AudioManager.Instance.ToggleMusic();
         AudioManager.Instance.ToggleSFX();
-        UpdateMuteStatusImage();
+
+        if (musicSource != null)
+        {
+            UpdateMuteStatusImage();
+        }
     }
 }

@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "grav-shift-tetris.sln"
+    "dotnet.defaultSolution": "TETRIS.sln"
 }
