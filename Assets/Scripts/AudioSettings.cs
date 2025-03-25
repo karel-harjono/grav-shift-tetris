@@ -12,6 +12,9 @@ public class AudioSettings : MonoBehaviour
         {
             UpdateMuteStatusImage();
         }
+        else{
+            musicSource = FindObjectOfType<AudioSource>();
+        }
     }
 
     public void UpdateMuteStatusImage()

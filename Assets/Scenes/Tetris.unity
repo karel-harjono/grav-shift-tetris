@@ -1133,7 +1133,7 @@ GameObject:
   - component: {fileID: 457058831}
   - component: {fileID: 457058830}
   m_Layer: 5
-  m_Name: ClockWise
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1699,9 +1699,9 @@ RectTransform:
   - {fileID: 735267096}
   m_Father: {fileID: 1041829247}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 350, y: 210}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -80, y: -15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &630206600
@@ -2460,7 +2460,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rotate ClockWise
+  m_text: Rotate Left
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2692,6 +2692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1098052740}
   tilemap: {fileID: 287221716}
+  board: {fileID: 1160022009}
 --- !u!114 &1041829244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5118,7 +5119,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rotate Anti-ClockWise
+  m_text: Rotate Right
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6016,6 +6017,7 @@ MonoBehaviour:
   backButton: {fileID: 1941406928}
   menuButton: {fileID: 630206598}
   tilemap: {fileID: 287221716}
+  board: {fileID: 1160022009}
 --- !u!114 &2028794263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6127,7 +6129,7 @@ GameObject:
   - component: {fileID: 2035472790}
   - component: {fileID: 2035472789}
   m_Layer: 5
-  m_Name: AntiRotate
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6308,9 +6310,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Move to Edge
-
-'
+  m_text: Move to Edge
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
