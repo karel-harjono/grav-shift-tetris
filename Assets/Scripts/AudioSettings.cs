@@ -13,7 +13,7 @@ public class AudioSettings : MonoBehaviour
             UpdateMuteStatusImage();
         }
         else{
-            musicSource = FindObjectOfType<AudioSource>();
+            musicSource = FindAnyObjectByType<AudioSource>(); // Faster option;
         }
     }
 
