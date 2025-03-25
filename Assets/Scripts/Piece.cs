@@ -59,6 +59,21 @@ public class Piece : MonoBehaviour
     {
         this.board.Clear(this);
 
+        bool isGameOverPanelShowing = FindFirstObjectByType<GameManager>().gameOverPanel.activeSelf;
+        bool isPauseMenuShowing = FindFirstObjectByType<PauseManager>().pauseMenu.activeSelf;
+        var controlsMenu = FindFirstObjectByType<ControlsMenu>();
+
+        if (isGameOverPanelShowing || isPauseMenuShowing || controlsMenu.startPanel.activeSelf || controlsMenu.controlsPanel.activeSelf)
+        {
+            lockTime += Time.deltaTime;
+            if (Time.time >= stepTime)
+            {
+                Step();
+            }
+            this.board.Set(this);
+            return;
+        }
+
         // check if the piece can move in the gravity direction
         Vector3Int gravityPosition = this.position + new Vector3Int(currentGravityDirection.x, currentGravityDirection.y, 0);
         if (!board.IsValidPosition(this, gravityPosition))
@@ -79,7 +94,6 @@ public class Piece : MonoBehaviour
             Rotate(1);
         }
 
-        
         Vector2Int oppositeDirection = new Vector2Int(-currentGravityDirection.x, -currentGravityDirection.y);
 
         // ignore the opposite direction of gravity

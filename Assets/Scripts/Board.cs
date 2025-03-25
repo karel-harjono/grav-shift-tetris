@@ -9,7 +9,7 @@ public class Board : MonoBehaviour
     public Vector3Int spawnPosition;
     public Vector3Int previewPosition = new Vector3Int(-20, 12, 0);
     public Vector2Int boardSize = new Vector2Int(20, 20);
-
+    public GameManager gameManager; // Reference to the Game Over UI Panel
     public RectInt Bounds
     {
         get
@@ -300,5 +300,6 @@ public class Board : MonoBehaviour
         AudioManager.Instance.PlaySFX("GameOver");
         // TODO: add game over screen
         this.tilemap.ClearAllTiles();
+        gameManager.ShowGameOver(); // Show Game Over UI
     }
 }
