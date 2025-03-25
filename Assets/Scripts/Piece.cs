@@ -100,6 +100,8 @@ public class Piece : MonoBehaviour
             Move(Vector2Int.down);
         }
 
+        if (Time.timeScale == 0f) // Prevent spacebar action when paused
+            return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             HardDrop();
