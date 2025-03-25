@@ -3527,7 +3527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: {x: -1, y: 0, z: 0}
-  previewPosition: {x: 16, y: 3, z: 0}
+  previewPosition: {x: 15, y: 6, z: 0}
   boardSize: {x: 20, y: 20}
   gameManager: {fileID: 2028794263}
   tetrominoes:
@@ -3753,8 +3753,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3821,8 +3821,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.1287e-10, y: 78.872}
-  m_SizeDelta: {x: 244.9603, y: 50}
+  m_AnchoredPosition: {x: 0, y: 49.306}
+  m_SizeDelta: {x: 178.6637, y: 44.425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1281680721
 GameObject:
@@ -4241,8 +4241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.1287e-10, y: -10}
-  m_SizeDelta: {x: 150, y: 150}
+  m_AnchoredPosition: {x: 0, y: -8.2}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1351444384
 MonoBehaviour:
@@ -4660,8 +4660,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 740.425, y: 176.25}
-  m_SizeDelta: {x: -1719.15, y: -872.25}
+  m_AnchoredPosition: {x: 352.88, y: 150.42}
+  m_SizeDelta: {x: -1110.7032, y: -680.6751}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1507297371
 MonoBehaviour:
@@ -5232,8 +5232,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 740.84, y: 384}
-  m_SizeDelta: {x: 201.682, y: 207.7445}
+  m_AnchoredPosition: {x: 352.03, y: 8.5635}
+  m_SizeDelta: {x: 148.997, y: 143.0364}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1780195643
 GameObject:
@@ -6018,6 +6018,8 @@ MonoBehaviour:
   menuButton: {fileID: 630206598}
   tilemap: {fileID: 287221716}
   board: {fileID: 1160022009}
+  nexttile: {fileID: 1507297369}
+  nextdirection: {fileID: 1763074129}
 --- !u!114 &2028794263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6226,7 +6228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -29}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2036746613
@@ -6423,7 +6425,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 78.875}
+  m_AnchoredPosition: {x: 0, y: 46}
   m_SizeDelta: {x: 244.9603, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2109280516
@@ -6473,8 +6475,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

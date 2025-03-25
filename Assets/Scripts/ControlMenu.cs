@@ -12,6 +12,8 @@ public class ControlsMenu : MonoBehaviour
     public GameObject menuButton;
     public Tilemap tilemap; // Reference to the Tilemap
     public Board board;
+    public GameObject nexttile;
+    public GameObject nextdirection;
 
     private bool gameStarted = false; // To prevent multiple restarts
 
@@ -21,6 +23,8 @@ public class ControlsMenu : MonoBehaviour
         startPanel.SetActive(true);
         controlsPanel.SetActive(false);
         menuButton.SetActive(false);
+        nexttile.SetActive(false);
+        nextdirection.SetActive(false);
 
         // Assign button click listeners
         startButton.onClick.AddListener(OpenControls);
@@ -47,6 +51,8 @@ public class ControlsMenu : MonoBehaviour
         gameStarted = true; // Prevent multiple starts
         controlsPanel.SetActive(false); // Hide Controls Menu
         menuButton.SetActive(true); // Show Menu Button
+        nexttile.SetActive(true);
+        nextdirection.SetActive(true);
         tilemap.ClearAllTiles(); // Clear all tiles
         board.SpawnPiece(); // Spawn the first piece
     }
