@@ -14,9 +14,9 @@ public class Piece : MonoBehaviour
 
     private Vector2Int currentDirection = Vector2Int.zero;
     private float moveTimer = 0f;
-    private float moveDelay = 0.3f;         // Initial delay
-    private float minDelay = 0.05f;         // Fastest it can go
-    private float delayDecrement = 0.05f;   // Speed up over time
+    private float moveDelay = 0.3f;         
+    private float minDelay = 0.05f;        
+    private float delayDecrement = 0.1f;     
     private bool isHoldingKey = false;
 
     private float stepTime;
@@ -213,7 +213,6 @@ public class Piece : MonoBehaviour
         {
             continue;
         }
-
         Lock();
     }
 
@@ -232,7 +231,6 @@ public class Piece : MonoBehaviour
 
         return valid;
     }
-
     private void Rotate(int direction)
     {
         int originalRotationIndex = rotationIndex;
