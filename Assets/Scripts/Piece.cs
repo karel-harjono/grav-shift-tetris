@@ -12,6 +12,13 @@ public class Piece : MonoBehaviour
     public float stepDelay = 1f;
     public float lockDelay = 0.5f;
 
+    private Vector2Int currentDirection = Vector2Int.zero;
+    private float moveTimer = 0f;
+    private float moveDelay = 0.3f;         
+    private float minDelay = 0.05f;        
+    private float delayDecrement = 0.1f;     
+    private bool isHoldingKey = false;
+
     private float stepTime;
     private float lockTime;
     private static Vector2Int currentGravityDirection = Vector2Int.down;
@@ -96,22 +103,42 @@ public class Piece : MonoBehaviour
 
         Vector2Int oppositeDirection = new Vector2Int(-currentGravityDirection.x, -currentGravityDirection.y);
 
-        // ignore the opposite direction of gravity
-        if (Input.GetKeyDown(KeyCode.A) && Vector2Int.left != oppositeDirection)
+        Vector2Int newDirection = Vector2Int.zero;
+
+        if (Input.GetKey(KeyCode.A)) newDirection = Vector2Int.left;
+        else if (Input.GetKey(KeyCode.D)) newDirection = Vector2Int.right;
+        else if (Input.GetKey(KeyCode.W)) newDirection = Vector2Int.up;
+        else if (Input.GetKey(KeyCode.S)) newDirection = Vector2Int.down;
+
+        if (newDirection != Vector2Int.zero && newDirection != oppositeDirection)
         {
-            Move(Vector2Int.left);
+            if (newDirection != currentDirection)
+            {
+                currentDirection = newDirection;
+                moveDelay = 0.3f; 
+                moveTimer = 0f;
+                Move(currentDirection);
+                isHoldingKey = true;
+            }
+            else
+            {
+                moveTimer += Time.deltaTime;
+
+                if (moveTimer >= moveDelay)
+                {
+                    Move(currentDirection);
+                    moveTimer = 0f;
+
+                    // Accelerate
+                    moveDelay = Mathf.Max(minDelay, moveDelay - delayDecrement);
+                }
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D) && Vector2Int.right != oppositeDirection)
+        else
         {
-            Move(Vector2Int.right);
-        }
-        else if (Input.GetKeyDown(KeyCode.W) && Vector2Int.up != oppositeDirection)
-        {
-            Move(Vector2Int.up);
-        }
-        else if (Input.GetKeyDown(KeyCode.S) && Vector2Int.down != oppositeDirection)
-        {
-            Move(Vector2Int.down);
+            currentDirection = Vector2Int.zero;
+            moveTimer = 0f;
+            isHoldingKey = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -186,7 +213,6 @@ public class Piece : MonoBehaviour
         {
             continue;
         }
-
         Lock();
     }
 
@@ -205,7 +231,6 @@ public class Piece : MonoBehaviour
 
         return valid;
     }
-
     private void Rotate(int direction)
     {
         int originalRotationIndex = rotationIndex;

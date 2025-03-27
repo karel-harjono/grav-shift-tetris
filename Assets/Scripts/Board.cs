@@ -190,7 +190,7 @@ public class Board : MonoBehaviour
         AudioManager.Instance.PlaySFX("LineClear");
         RectInt bounds = this.Bounds;
         int halfwayPoint;
-
+        ScreenShake.Instance.Shake(0.1f, 0.1f);
         // clear the line
         if (isRow)
         {
@@ -295,6 +295,10 @@ public class Board : MonoBehaviour
         }
     }
 
+        public Vector3 GridToWorldPosition(Vector3Int gridPos)
+    {
+        return new Vector3(gridPos.x, gridPos.y, 0); // or whatever your scale/offset is
+    }
     public void GameOver()
     {
         AudioManager.Instance.PlaySFX("GameOver");
