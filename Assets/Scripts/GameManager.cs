@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public void ExitGame()
     {
         Debug.Log("Game is exiting...");
-        UnityEditor.EditorApplication.isPlaying = false;
-        // Application.Quit();
+        //UnityEditor.EditorApplication.isPlaying = false;
+         Application.Quit();
     }
 }
