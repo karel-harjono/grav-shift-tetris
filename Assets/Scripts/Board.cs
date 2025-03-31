@@ -55,6 +55,7 @@ public class Board : MonoBehaviour
         }
 
         int random = Random.Range(0, tetrominoes.Length);
+        random = 1;
         TetrominoData data = tetrominoes[random];
 
         nextPiece.Initialize(this, previewPosition, data, true);
@@ -207,8 +208,17 @@ public class Board : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX("LineClear");
         RectInt bounds = this.Bounds;
-        int halfwayPoint;
         ScreenShake.Instance.Shake(0.1f, 0.1f);
+        int halfwayPoint;
+        if (isRow)
+        {
+            halfwayPoint = bounds.yMin + bounds.height / 2;
+        }
+        else
+        {
+            halfwayPoint = bounds.xMin + bounds.width / 2;
+        }
+
         // clear the line
         if (isRow)
         {
@@ -218,9 +228,6 @@ public class Board : MonoBehaviour
                 Vector3Int position = new Vector3Int(col, index, 0);
                 tilemap.SetTile(position, null);
             }
-
-            // only affect half of the row
-            halfwayPoint = bounds.xMin + bounds.width / 2;
         }
         else
         {
@@ -230,9 +237,6 @@ public class Board : MonoBehaviour
                 Vector3Int position = new Vector3Int(index, row, 0);
                 tilemap.SetTile(position, null);
             }
-
-            // only affect half of the column
-            halfwayPoint = bounds.yMin + bounds.height / 2;
         }
 
         // move tiles in the direction of gravity
@@ -248,6 +252,7 @@ public class Board : MonoBehaviour
                     {
                         Vector3Int position = new Vector3Int(col, row + 1, 0);
                         TileBase above = tilemap.GetTile(position);
+                        tilemap.SetTile(position, null);
 
                         position = new Vector3Int(col, row, 0);
                         tilemap.SetTile(position, above);
@@ -263,17 +268,11 @@ public class Board : MonoBehaviour
                     {
                         Vector3Int position = new Vector3Int(col, row - 1, 0);
                         TileBase below = tilemap.GetTile(position);
+                        tilemap.SetTile(position, null);
 
                         position = new Vector3Int(col, row, 0);
                         tilemap.SetTile(position, below);
                     }
-                }
-
-                // clear the moved tiles in the bottom row on the right half
-                for (int col = halfwayPoint; col < bounds.xMax; col++)
-                {
-                    Vector3Int position = new Vector3Int(col, bounds.yMin, 0);
-                    tilemap.SetTile(position, null);
                 }
             }
         }
@@ -285,10 +284,11 @@ public class Board : MonoBehaviour
                 // move only half of the blocks to the left of the cleared column to the right
                 for (int col = index; col > halfwayPoint; col--)
                 {
-                    for (int row = bounds.yMin; row < halfwayPoint; row++) // Only up to halfway
+                    for (int row = bounds.yMin; row < bounds.yMax; row++) // Only up to halfway
                     {
                         Vector3Int position = new Vector3Int(col - 1, row, 0);
                         TileBase left = tilemap.GetTile(position);
+                        tilemap.SetTile(position, null);
 
                         position = new Vector3Int(col, row, 0);
                         tilemap.SetTile(position, left);
@@ -304,6 +304,7 @@ public class Board : MonoBehaviour
                     {
                         Vector3Int position = new Vector3Int(col + 1, row, 0);
                         TileBase right = tilemap.GetTile(position);
+                        tilemap.SetTile(position, null);
 
                         position = new Vector3Int(col, row, 0);
                         tilemap.SetTile(position, right);
