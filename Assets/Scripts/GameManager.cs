@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public GameObject menuButton;
 
     private int score;
-    private int pointsPerLine = 400;
+    private int pointsPerLine = 20;
     [SerializeField] private ScoreCounterUI scoreCounter;
 
     void Start()
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        this.ResetScore(); // Set the score back to zero
         gameOverPanel.SetActive(false); // Hide Game Over UI
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reloads current scene
     }
@@ -36,7 +37,15 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScore()
     {
+        // Increase the score by the number of points per line
         score += pointsPerLine;
+        scoreCounter.UpdateScore(score);
+    }
+
+    public void ResetScore()
+    {
+        // Set the score back to zero
+        score = 0;
         scoreCounter.UpdateScore(score);
     }
 }
