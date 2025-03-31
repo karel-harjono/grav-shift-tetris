@@ -1082,7 +1082,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
+  m_text: '0
 
 '
   m_isRightToLeft: 0
@@ -3610,7 +3610,7 @@ MonoBehaviour:
   previewPosition: {x: 15, y: 6, z: 0}
   boardSize: {x: 20, y: 20}
   gameManager: {fileID: 2028794263}
-  scoreText: {fileID: 699512374}
+  currentScore: {fileID: 388987666}
   tetrominoes:
   - tetromino: 0
     tile: {fileID: 11400000, guid: ca96bef06e4b2ae4291b3da30ad48615, type: 2}

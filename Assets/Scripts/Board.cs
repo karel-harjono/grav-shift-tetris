@@ -13,7 +13,7 @@ public class Board : MonoBehaviour
     public GameManager gameManager; // Reference to the Game Over UI Panel
     private int score;
     private int pointsPerLine = 400;
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI currentScore;
     public RectInt Bounds
     {
         get
@@ -131,7 +131,7 @@ public class Board : MonoBehaviour
                 {
                     LineClear(row, gravityDir, true);
                     score += pointsPerLine;
-                    scoreText.text = $"Score: {score}";
+                    currentScore.text = $"{score}";
                     Debug.Log("score: " + score);
                 }
                 else
@@ -150,7 +150,7 @@ public class Board : MonoBehaviour
                 {
                     LineClear(col, gravityDir, false);
                     score += pointsPerLine;
-                    scoreText.text = $"Score: {score}";
+                    currentScore.text = $"{score}";
                     Debug.Log("score: " + score);
                 }
                 else
