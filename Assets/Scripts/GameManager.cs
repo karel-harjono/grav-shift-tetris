@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
-{ 
+{
     public GameObject gameOverPanel;
     public GameObject menuButton;
 
@@ -32,13 +32,27 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game is exiting...");
         //UnityEditor.EditorApplication.isPlaying = false;
-         Application.Quit();
+        Application.Quit();
     }
 
-    public void IncreaseScore()
+    public void IncreaseScore(int numLines)
     {
         // Increase the score by the number of points per line
-        score += pointsPerLine;
+        switch (numLines)
+        {
+            case 1:
+                score += pointsPerLine;
+                break;
+            case 2:
+                score += pointsPerLine * 4;
+                break;
+            case 3:
+                score += pointsPerLine * 8;
+                break;
+            case 4:
+                score += pointsPerLine * 16;
+                break;
+        }
         scoreCounter.UpdateScore(score);
     }
 
