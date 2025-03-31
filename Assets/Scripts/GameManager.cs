@@ -2,9 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
-{
+{ 
     public GameObject gameOverPanel;
     public GameObject menuButton;
+
+    private int score;
+    private int pointsPerLine = 400;
+    [SerializeField] private ScoreCounterUI scoreCounter;
 
     void Start()
     {
@@ -28,5 +32,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game is exiting...");
         //UnityEditor.EditorApplication.isPlaying = false;
          Application.Quit();
+    }
+
+    public void IncreaseScore()
+    {
+        score += pointsPerLine;
+        scoreCounter.UpdateScore(score);
     }
 }
