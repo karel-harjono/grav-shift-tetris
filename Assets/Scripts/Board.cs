@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,6 +11,9 @@ public class Board : MonoBehaviour
     public Vector3Int previewPosition = new Vector3Int(-20, 12, 0);
     public Vector2Int boardSize = new Vector2Int(20, 20);
     public GameManager gameManager; // Reference to the Game Over UI Panel
+    private int score;
+    private int pointsPerLine = 400;
+    [SerializeField] private TextMeshProUGUI currentScore;
     public RectInt Bounds
     {
         get
@@ -126,6 +130,9 @@ public class Board : MonoBehaviour
                 if (IsLineFull(row, true))
                 {
                     LineClear(row, gravityDir, true);
+                    score += pointsPerLine;
+                    currentScore.text = $"{score}";
+                    Debug.Log("score: " + score);
                 }
                 else
                 {
@@ -142,6 +149,9 @@ public class Board : MonoBehaviour
                 if (IsLineFull(col, false))
                 {
                     LineClear(col, gravityDir, false);
+                    score += pointsPerLine;
+                    currentScore.text = $"{score}";
+                    Debug.Log("score: " + score);
                 }
                 else
                 {
