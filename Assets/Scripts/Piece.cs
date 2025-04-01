@@ -8,7 +8,7 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public int rotationIndex { get; private set; }
 
-
+private float speedTimer = 0f;
     public float stepDelay = 1f;
     public float lockDelay = 0.5f;
 
@@ -17,6 +17,9 @@ public class Piece : MonoBehaviour
     private float moveDelay = 0.3f;         
     private float minDelay = 0.05f;        
     private float delayDecrement = 0.1f;     
+     public float speedIncreaseInterval = 20f; 
+    public float speedIncreaseAmount = 0.2f; 
+    public float minimumStepDelay = 0.1f;    
     private bool isHoldingKey = false;
 
     private float stepTime;
@@ -79,6 +82,13 @@ public class Piece : MonoBehaviour
             }
             this.board.Set(this);
             return;
+        }
+
+        speedTimer += Time.deltaTime;
+        if (speedTimer >= speedIncreaseInterval)
+        {
+            stepDelay = Mathf.Max(minimumStepDelay, stepDelay - speedIncreaseAmount);
+            speedTimer = 0f;
         }
 
         // check if the piece can move in the gravity direction
