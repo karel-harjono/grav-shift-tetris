@@ -17,9 +17,6 @@ private float speedTimer = 0f;
     private float moveDelay = 0.3f;         
     private float minDelay = 0.05f;        
     private float delayDecrement = 0.1f;     
-     public float speedIncreaseInterval = 45f; 
-    public float speedIncreaseAmount = 0.2f; 
-    public float minimumStepDelay = 0.1f;    
     private bool isHoldingKey = false;
 
     private float stepTime;
@@ -82,13 +79,6 @@ private float speedTimer = 0f;
             }
             this.board.Set(this);
             return;
-        }
-
-        speedTimer += Time.deltaTime;
-        if (speedTimer >= speedIncreaseInterval)
-        {
-            stepDelay = Mathf.Max(minimumStepDelay, stepDelay - speedIncreaseAmount);
-            speedTimer = 0f;
         }
 
         // check if the piece can move in the gravity direction
