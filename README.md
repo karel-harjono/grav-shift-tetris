@@ -1,21 +1,17 @@
 ﻿# Grav-Shift-Tetris
-A tetris clone with a twist `Gravity Shift`
+A Tetris clone with a twist `Gravity Shift`
 
 ## Demo Video
-
-
 https://github.com/user-attachments/assets/971f9671-4371-457a-b4d6-a60025ad225a
-
-
 
 ## Playable Link
 https://jgresl.itch.io/grav-shift-tetris
 
 ## The Twist
-`Gravity Shift` works by randomly changing which edge Tetris pieces gravitate towards. It is a difficult twist because the player has to think about how placing the piece on one edge could restrict the ability to place pieces on the neighbouring edges - especially in the corners.
+`Gravity Shift` works by randomly changing which edge Tetris pieces gravitate towards. It is a difficult twist because the player has to think about how placing the piece on one edge could restrict the ability to place pieces on the neighboring edges - especially in the corners.
 
 ## Versioning
-v1.0.0
+v1.0.1
 
 ## Controls
 - Move piece up `W`
@@ -47,9 +43,9 @@ v1.0.0
     - Show next tile
     - Show next gravity direction
     - Show score
-        - DoTween animation 
+        - DoTween animation updating score
 - Game over screen
--   Restart button
+    - Restart button
 
 ## Scoring
 - 20 points for clearing 1 row
@@ -65,9 +61,6 @@ v1.0.0
 2. Clone the project via [Git](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=cli) or [Github Desktop](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=desktop)
 3. Open **Unity Hub**
 4. Click **"Open"** and select the cloned project folder (with Assets, ProjectSettings, Packages)
-
-## Assets
-https://github.com/user-attachments/assets/9f5d7198-4b8f-42a4-a1e3-c6987d176736
 
 ## References
 The following tutorials were used as guidance to create this project:
