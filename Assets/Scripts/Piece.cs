@@ -17,6 +17,7 @@ private float speedTimer = 0f;
     private float moveDelay = 0.3f;         
     private float minDelay = 0.05f;        
     private float delayDecrement = 0.1f;     
+
     private bool isHoldingKey = false;
 
     private float stepTime;
