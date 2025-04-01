@@ -2,7 +2,12 @@
 A Tetris clone with a twist `Gravity Shift`
 
 ## Demo Video
+
+### Video 1
 https://github.com/user-attachments/assets/971f9671-4371-457a-b4d6-a60025ad225a
+
+### Video 2
+https://github.com/user-attachments/assets/ece9db63-2b30-4965-adf7-d303322f91ff
 
 ## Playable Link
 https://jgresl.itch.io/grav-shift-tetris
