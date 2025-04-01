@@ -122,51 +122,45 @@ public class Board : MonoBehaviour
     public void ClearLines()
     {
         RectInt bounds = this.Bounds;
-        Vector2Int gravityDir = Piece.CurrentGravityDirection;
-
-        // check for horizontal lines (rows)
-        if (gravityDir == Vector2Int.up || gravityDir == Vector2Int.down)
+        int numLinesTotal = 0;
+        
+        // Check for horizontal lines (rows)
+        int row = bounds.yMin;
+        while (row < bounds.yMax)
         {
-            int numLines = 0;
-            int row = bounds.yMin;
-            while (row < bounds.yMax)
+            if (IsLineFull(row, true))
             {
-                if (IsLineFull(row, true))
-                {
-                    LineClear(row, gravityDir, true);
-                    numLines++;
-                }
-                else
-                {
-                    row++;
-                }
+                int halfwayPoint = bounds.yMin + bounds.height / 2;
+                Vector2Int clearDirection = row > halfwayPoint ? Vector2Int.up : Vector2Int.down;
+                LineClear(row, clearDirection, true);
+                numLinesTotal++;
             }
-            if (numLines > 0)
+            else
             {
-                gameManager.IncreaseScore(numLines);
+                row++;
             }
         }
-        // check for vertical lines (columns)
-        else if (gravityDir == Vector2Int.left || gravityDir == Vector2Int.right)
+        
+        // Check for vertical lines (columns)
+        int col = bounds.xMin;
+        while (col < bounds.xMax)
         {
-            int numLines = 0;
-            int col = bounds.xMin;
-            while (col < bounds.xMax)
+            if (IsLineFull(col, false))
             {
-                if (IsLineFull(col, false))
-                {
-                    LineClear(col, gravityDir, false);
-                    numLines++;
-                }
-                else
-                {
-                    col++;
-                }
+                int halfwayPoint = bounds.xMin + bounds.width / 2;
+                Vector2Int clearDirection = col > halfwayPoint ? Vector2Int.right : Vector2Int.left;
+                LineClear(col, clearDirection, false);
+                numLinesTotal++;
             }
-            if (numLines > 0)
+            else
             {
-                gameManager.IncreaseScore(numLines);
+                col++;
             }
+        }
+        
+        if (numLinesTotal > 0)
+        {
+            gameManager.IncreaseScore(numLinesTotal);
         }
     }
 
