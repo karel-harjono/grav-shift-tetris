@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class Board : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Board : MonoBehaviour
     public Vector3Int previewPosition = new Vector3Int(-20, 12, 0);
     public Vector2Int boardSize = new Vector2Int(20, 20);
     public GameManager gameManager; // Reference to the Game Over UI Panel
+    public GameObject HalfWayX;
+    public GameObject HalfWayY;
 
     public RectInt Bounds
     {
@@ -38,6 +41,10 @@ public class Board : MonoBehaviour
         {
             tetrominoes[i].Initialize();
         }
+        
+        // Hide indicators at start
+        if (HalfWayX != null) HalfWayX.SetActive(false);
+        if (HalfWayY != null) HalfWayY.SetActive(false);
     }
 
     private void Start()
@@ -55,7 +62,6 @@ public class Board : MonoBehaviour
         }
 
         int random = Random.Range(0, tetrominoes.Length);
-        random = 1;
         TetrominoData data = tetrominoes[random];
 
         nextPiece.Initialize(this, previewPosition, data, true);
@@ -198,21 +204,35 @@ public class Board : MonoBehaviour
         return true;
     }
 
-    private void LineClear(int index, Vector2Int gravityDir, bool isRow)
+    private void LineClear(int index, Vector2Int clearDirection, bool isRow)
     {
         AudioManager.Instance.PlaySFX("LineClear");
         RectInt bounds = this.Bounds;
         ScreenShake.Instance.Shake(0.1f, 0.1f);
         int halfwayPoint;
+        
+        // Show and pulse the appropriate halfway indicator
         if (isRow)
         {
+            if (HalfWayY != null) 
+            {
+                HalfWayY.SetActive(true);
+                StartCoroutine(PulseIndicator(HalfWayY));
+            }
+            if (HalfWayX != null) HalfWayX.SetActive(false);
             halfwayPoint = bounds.yMin + bounds.height / 2;
         }
         else
         {
+            if (HalfWayX != null) 
+            {
+                HalfWayX.SetActive(true);
+                StartCoroutine(PulseIndicator(HalfWayX));
+            }
+            if (HalfWayY != null) HalfWayY.SetActive(false);
             halfwayPoint = bounds.xMin + bounds.width / 2;
         }
-
+        
         // clear the line
         if (isRow)
         {
@@ -237,7 +257,7 @@ public class Board : MonoBehaviour
         if (isRow)
         {
             // for horizontal lines (rows)
-            if (gravityDir == Vector2Int.down)
+            if (clearDirection == Vector2Int.down)
             {
                 // move only half of the blocks above the cleared row down
                 for (int row = index; row < halfwayPoint - 1; row++)
@@ -253,7 +273,7 @@ public class Board : MonoBehaviour
                     }
                 }
             }
-            else if (gravityDir == Vector2Int.up)
+            else if (clearDirection == Vector2Int.up)
             {
                 // move only half of the blocks below the cleared row up
                 for (int row = index; row > halfwayPoint; row--)
@@ -273,7 +293,7 @@ public class Board : MonoBehaviour
         else
         {
             // for vertical lines (columns)
-            if (gravityDir == Vector2Int.right)
+            if (clearDirection == Vector2Int.right)
             {
                 // move only half of the blocks to the left of the cleared column to the right
                 for (int col = index; col > halfwayPoint; col--)
@@ -289,7 +309,7 @@ public class Board : MonoBehaviour
                     }
                 }
             }
-            else if (gravityDir == Vector2Int.left)
+            else if (clearDirection == Vector2Int.left)
             {
                 // move only half of the blocks to the right of the cleared column to the left
                 for (int col = index; col < halfwayPoint - 1; col++)
@@ -306,6 +326,36 @@ public class Board : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator PulseIndicator(GameObject indicator)
+    {
+        // Original scale
+        Vector3 originalScale = indicator.transform.localScale;
+        
+        // Pulse effect - grow
+        float duration = 0.5f;
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+            indicator.transform.localScale = Vector3.Lerp(originalScale, originalScale * 1.1f, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Pulse effect - shrink back
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+            indicator.transform.localScale = Vector3.Lerp(originalScale * 1.1f, originalScale, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Hide after pulse
+        indicator.SetActive(false);
     }
 
     public Vector3 GridToWorldPosition(Vector3Int gridPos)
